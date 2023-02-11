@@ -1,0 +1,15 @@
+---
+title: "Assignment 2 Task 1"
+author: "Matthieu Huy"
+date: "2023-02-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+```
+
