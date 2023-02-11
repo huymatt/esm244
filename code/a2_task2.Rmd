@@ -1,0 +1,46 @@
+---
+title: 'Assignment 2 Task 2: Parameter Estimation with Purrr'
+author: "Matthieu Huy"
+date: "2023-02-11"
+output: html_document
+---
+
+```{r setup, echo = TRUE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(tidymodels)
+library(kableExtra)
+library(here)
+library(cowplot)
+library(GGally)
+library(AICcmodavg)
+library(jtools)
+```
+
+This analysis uses data containing observations of lizard species, sex, length, and weight in the Jornada Basin, located in the Chihuahaun desert of New Mexico.
+
+Citation:\
+- Lightfoot, D. and W.G. Whitford. 2020. Lizard pitfall trap data from 11 NPP study locations at the Jornada Basin LTER site, 1989-2006 ver 37. Environmental Data Initiative. https://doi.org/10.6073/pasta/4a6e258fb49c31e222ecbbcfd128967f (Accessed 2023-02-11).
+
+
+Metadata:\
+- https://portal.edirepository.org/nis/mapbrowse?packageid=knb-lter-jrn.210007001.37
+
+
+For this analysis, I will use non linear least squares to estimate parameters of a length to weight model for lizard populations in New Mexico. 
+
+### Read in and clean data 
+
+```{r}
+lizards_data <- read_csv(here("data/lizards.csv")) |>
+  janitor::clean_names() |>
+  rename(length = sv_length, species = spp)
+
+lizard_species_code <- read_table(here("data/Lizardcodelist.txt"), col_names = FALSE) |>
+  unite(scientific_name, X2, X3) |>
+  unite(common_name, X4, X5, X6) |>
+  select(code = X1, scientific_name, common_name) |>
+  tail(19)
+```
+
+
